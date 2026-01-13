@@ -1,13 +1,9 @@
-export interface ApiResponse<T = any> {
-  success: boolean;
-  code: number;
-  data: T | null;
-  message: string;
-}
+import { ContentfulStatusCode } from "hono/utils/http-status";
+import { ApiResponse, ErrorCustomType, WrapperData } from "../types/wrapper.type.js";
 
 export const createResponse = <T = any>(
   success: boolean,
-  code: number,
+  code: ContentfulStatusCode,
   data: T | null = null,
   message: string = ''
 ): ApiResponse<T> => {
@@ -22,15 +18,23 @@ export const createResponse = <T = any>(
 export const successResponse = <T = any>(
   data: T,
   message: string = 'Success',
-  code: number = 200
+  code: ContentfulStatusCode = 200
 ): ApiResponse<T> => {
   return createResponse(true, code, data, message);
 };
 
 export const errorResponse = (
   message: string,
-  code: number = 400,
+  code: ContentfulStatusCode = 400,
   data: any = null
 ): ApiResponse => {
   return createResponse(false, code, data, message);
 };
+
+export const wrapperData = <T = any>(data: T | null, error: ErrorCustomType | null): WrapperData => {
+  if (error) {
+    return { data: null, error: errorResponse(error.message, error.code) }
+  }
+
+  return { data, error: null }
+}

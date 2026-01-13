@@ -1,5 +1,8 @@
 import { ProductRepository } from '../repositories/product.repo.js';
 import { Product, CreateProductRequest, UpdateProductRequest } from '../types/product.type.js';
+import { wrapperData } from '../utils/wrapper.js';
+import { DataNotFound } from '../utils/errors.js';
+import { WrapperData } from '../types/wrapper.type.js';
 
 export class ProductDomain {
   private repo: ProductRepository;
@@ -9,11 +12,15 @@ export class ProductDomain {
   }
 
   async getAllProducts(): Promise<Product[]> {
-    return this.repo.getAllProducts();
+    return await this.repo.getAllProducts();
   }
 
-  async getProductById(id: string): Promise<Product | null> {
-    return this.repo.getProductById(id);
+  async getProductById(id: string): Promise<WrapperData> {
+    const data = await this.repo.getProductById(id);
+    if (!data) {
+      return wrapperData(null, DataNotFound())
+    }
+    return wrapperData(data, null)
   }
 
   async createProduct(productData: CreateProductRequest): Promise<Product> {

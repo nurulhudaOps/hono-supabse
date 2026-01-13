@@ -18,3 +18,8 @@ export interface UpdateProductRequest {
   description?: string;
   price?: number;
 }
+
+export interface DetailProduct {
+  data: Product
+  error: Error | null
+}
