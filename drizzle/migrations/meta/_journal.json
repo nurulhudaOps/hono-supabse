@@ -1,12 +1,12 @@
 {
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1768276117265,
-      "tag": "0000_clear_jigsaw",
+      "version": "7",
+      "when": 1768319492142,
+      "tag": "0000_optimal_shard",
       "breakpoints": true
     }
   ]
